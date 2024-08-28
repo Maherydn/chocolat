@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <a class="btn btn-primary btn-sm m-4" href="{{ path('admin.article.create') }}">Create article</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th style="width: 200px">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>
+                    {{ article.name }}
+                </td>
+                <td>
+                    {{ article.price }} ar
+                </td><td>
+                    {{ article.quantity | default(0) }}
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a class="btn btn-primary btn-sm" href="{{ path('admin.article.update', {id: article.id}) }}">Update</a>
+                        <a class="btn btn-primary btn-sm" href="{{ path('admin.article.sell', {id: article.id}) }}">vendre</a>
+                        <form action="{{ path('admin.article.delete', {id: article.id}) }}" method="post">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                supprimer
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+
+    </table>
+{% endblock %}

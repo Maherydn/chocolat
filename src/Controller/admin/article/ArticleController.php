@@ -8,6 +8,7 @@ use App\Form\SellType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,19 +20,25 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(ArticleRepository $articleRepository): Response
     {
-        $articles = $articleRepository->findAll();
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        $articles = $articleRepository->findByUser($userId);
         return $this->render('/admin/article/index.html.twig', [
             'articles' => $articles
         ]);
     }
 
     #[Route('/create', name: 'create')]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, Security $security): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $security->getUser();
+            $article->setUser($user);
+
             $em->persist($article);
             $em->flush();
             return $this->redirectToRoute('admin.article.index');

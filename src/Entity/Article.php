@@ -34,6 +34,9 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'article')]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +122,18 @@ class Article
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

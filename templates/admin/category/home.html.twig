@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category{% endblock %}
+
+{% block body %}
+    {% for category in categories %}
+    <h2>{{ category.name }}</h2>
+    <h3>Listes des articles dans {{ category.name }} : </h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Stock</th>
+            <th>Prix</th>
+            <th style="width: 200px">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for article in category.article %}
+            <tr>
+                <td>
+                    {{ article.name | default('empty')}}
+                </td>
+                <td>
+                    {{ article.quantity | default('empty')}}
+                </td>
+                <td>
+                    {{ article.price | default('empty')}}
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('admin.article.sell', {id: article.id}) }}">Acheter</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <br/>
+        <br/>
+    </table>
+
+    {% endfor %}
+
+
+{% endblock %}

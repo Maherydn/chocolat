@@ -22,6 +22,11 @@
                 <td>
                     {{ category.name }}
                 </td>
+{#                {% for article in category.article %}#}
+{#                    <td>#}
+{#                        {{ article.name | default('empty')}}#}
+{#                    </td>#}
+{#                {% endfor %}#}
                 <td>
                     <div class="d-flex gap-1">
                         <a class="btn btn-primary btn-sm" href="{{ path('admin.category.update', {id: category.id}) }}">Update</a>

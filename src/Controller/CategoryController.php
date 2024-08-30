@@ -19,7 +19,18 @@ class CategoryController extends AbstractController
     public function index(CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findAll();
+
         return $this->render('admin/category/index.html.twig', [
+            'categories' => $category,
+        ]);
+
+    } #[Route('/home', name: 'home')]
+    public function home(CategoryRepository $categoryRepository): Response
+    {
+        $category = $categoryRepository->findArticles();
+//        dd($category);
+
+        return $this->render('admin/category/home.html.twig', [
             'categories' => $category,
         ]);
     }
